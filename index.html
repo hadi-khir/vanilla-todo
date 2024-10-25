@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Vanilla Todo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="title-wrapper">
+        <h1>Crush sh*t today.</h1>
+      </div>
+    </header>
+    <section>
+      <form>
+        <div class="form-wrapper">
+          <input
+            class="todo-input"
+            type="text"
+            placeholder="Crush something..."
+          />
+          <button class="input-btn" type="submit">Crush</button>
+        </div>
+      </form>
+    </section>
+    <main>
+      <div class="todos-wrapper">
+        <ul class="todos-list">
+          <li class="list-item">
+            <input class="todo-item-checkbox" type="checkbox" />
+            <span class="todo-item-title">Crushed this</span>
+            <button class="todo-item-delete">Delete</button>
+          </li>
+          <li class="list-item">
+            <input class="todo-item-checkbox" type="checkbox" />
+            <span class="todo-item-title">Also crushed this</span>
+            <button class="todo-item-delete">Delete</button>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer>
+      <hr />
+      <div class="footer-bar-wrapper">
+        <div class="footer-bar-left-wrapper">
+          <button class="filter-option-all">All</button>
+          <button class="filter-option-active">Active</button>
+          <button class="filter-option-completed">Completed</button>
+          <span class="total-count" aria-live="polite">Tasks Remaining: 0</span>
+        </div>
+        <div class="footer-bar-right-wrapper">
+          <button class="clear-btn">Clear Completed</button>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

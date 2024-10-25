@@ -1,0 +1,118 @@
+.title-wrapper {
+  text-align: center;
+}
+
+.form-wrapper {
+  text-align: center;
+  margin-top: 5em;
+  margin-bottom: 3em;
+}
+
+.todo-input {
+  width: 25em;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-sizing: border-box;
+  font-size: x-large;
+}
+
+.todo-input:focus {
+  outline: none;
+  border-bottom: 2px solid orange;
+}
+
+.input-btn {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
+  border: none;
+  margin: 0;
+  box-shadow: none;
+  color: white;
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: x-large;
+  background-size: 400% 400%;
+  animation: ButtonBg 10s ease infinite;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.todos-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10em;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20em;
+  font-size: large;
+  font-weight: 400;
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  margin-top: 1em;
+}
+
+.todo-item-checkbox {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 5px;
+  border: 2px solid #555;
+}
+
+.todo-item-delete {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
+  border: none;
+  color: white;
+  background: #e90a0a;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: medium;
+}
+
+.footer-bar-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-option-all,
+.filter-option-active,
+.filter-option-completed,
+.total-count,
+.clear-btn {
+  display: inline-block;
+}
+
+.filter-option-all,
+.filter-option-active,
+.filter-option-completed,
+.clear-btn {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
+  border: none;
+  color: white;
+  background: #945cbc;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: medium;
+}
+
+.footer-bar-left-wrapper,
+.footer-bar-right-wrapper {
+  display: inline-block;
+}
