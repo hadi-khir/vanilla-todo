@@ -16,14 +16,14 @@
       </div>
     </header>
     <section>
-      <form>
+      <form onsubmit="return false;">
         <div class="form-wrapper">
           <input
             class="todo-input"
             type="text"
             placeholder="Crush something..."
           />
-          <button class="input-btn" type="submit">Crush</button>
+          <button class="input-btn" onclick="createTodo()">Crush</button>
         </div>
       </form>
     </section>
@@ -57,5 +57,6 @@
         </div>
       </div>
     </footer>
+    <script src="app.js"></script>
   </body>
 </html>

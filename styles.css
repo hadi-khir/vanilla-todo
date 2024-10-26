@@ -40,6 +40,11 @@
   animation: ButtonBg 10s ease infinite;
 }
 
+.input-btn:active { 
+  transform: scale(0.98); 
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+} 
+
 ul {
   list-style-type: none;
 }
@@ -47,7 +52,7 @@ ul {
 .todos-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 10em;
+  margin-bottom: 5em;
 }
 
 .list-item {
@@ -83,6 +88,11 @@ ul {
   font-size: medium;
 }
 
+.todo-item-delete:active { 
+  transform: scale(0.98); 
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+} 
+
 .footer-bar-wrapper {
   display: flex;
   justify-content: space-between;
@@ -110,6 +120,14 @@ ul {
   text-decoration: none;
   cursor: pointer;
   font-size: medium;
+}
+
+.filter-option-all:active,
+.filter-option-active:active,
+.filter-option-completed:active,
+.clear-btn:active {
+  transform: scale(0.98); 
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
 }
 
 .footer-bar-left-wrapper,
