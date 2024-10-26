@@ -1,5 +1,8 @@
-function createTodo() {
-    
+function createTodo(event) {
+    if (event.key !== 'Enter') {
+        return false;
+    }
+
     // Grab the user input. 
     const newTodoInput = document.querySelector('.todo-input').value;
     if (!notNullOrEmpty(newTodoInput)) {
@@ -32,6 +35,12 @@ function createTodo() {
     // Add the new list item to the task list
     var todoList = document.querySelector('.todos-list');
     todoList.appendChild(newTodoListItem);
+
+    // Reset the input
+    document.querySelector('.todo-input').value = '';
+
+    event.stopPropagation();
+    event.preventDefault();
 }
 
 /**
@@ -42,6 +51,7 @@ function createTodo() {
  */
 function notNullOrEmpty(inputStr) {
 
+    console.log(inputStr);
     const trimmedInput = inputStr.trim();
     if (trimmedInput !== null && trimmedInput !== '' && trimmedInput.length > 0) {
         return true;
