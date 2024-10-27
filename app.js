@@ -3,14 +3,7 @@
  * @param {HTMLEvent} event signalling the entering of a todo item via return key click.
  * @returns a new @code{'li'} item to be added to the task list. 
  */
-function createTodo(event) {
-
-    if (event !== null && event !== undefined) {
-        
-        if (event.key !== "Enter") {
-            return false;
-        }
-    } 
+function createTodo() {
 
     // Grab the user input. 
     const newTodoInput = document.querySelector('.todo-input').value;
@@ -49,12 +42,6 @@ function createTodo(event) {
 
     // Reset the input
     document.querySelector('.todo-input').value = '';
-
-    if (event) {
-
-        event.stopPropagation();
-        event.preventDefault();
-    }
 }
 
 /**
