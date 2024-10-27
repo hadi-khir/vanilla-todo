@@ -1,6 +1,26 @@
+
+/**
+ * Fetches the users tasks from the browsers localstorage and updates the total count text.
+ * 
+ * @returns any tasks stored in the browsers localstorage under the key 'tasks'.
+ */
+function fetchFromStorage() {
+
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks === null) {
+        return;
+    }
+
+    for (const task of tasks) {
+        createHtmlElementForTask(task);
+    }
+
+    updateTotalCount(tasks.length);
+}
+
 /**
  * Creates a new HTML todo item, include the li parent node, along with the input, span and button child elements.
- * @param {HTMLEvent} event signalling the entering of a todo item via return key click.
+ * Additionally stores the task details in the browsers localstorage.
  * @returns a new @code{'li'} item to be added to the task list. 
  */
 function createTodo() {
@@ -12,15 +32,22 @@ function createTodo() {
         return;
     }
 
+    addToStorage(newTodoInput);
+
+    createHtmlElementForTask(newTodoInput);
+}
+
+function createHtmlElementForTask(task) {
+
     // Create the delete button
     var deleteBtn = document.createElement('button');
     deleteBtn.appendChild(document.createTextNode('Delete'));
     deleteBtn.classList.add('todo-item-delete');
     deleteBtn.setAttribute('onclick', 'deleteTodo(event)')
-    
+
     // Create the title
     var todoTitle = document.createElement('span');
-    todoTitle.appendChild(document.createTextNode(newTodoInput));
+    todoTitle.appendChild(document.createTextNode(task));
     todoTitle.classList.add('todo-item-title');
 
     // Create the input checkbox
@@ -44,6 +71,21 @@ function createTodo() {
     document.querySelector('.todo-input').value = '';
 }
 
+function addToStorage(task) {
+
+    let tasks;
+
+    if (localStorage.getItem('tasks') === null) {
+        tasks = [task];
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+        tasks.push(task);
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    updateTotalCount(tasks.length);
+}
+
 /**
  * Removes an item from the todo list.
  * @param {HTMLEvent} event signaling the onclick function of the todo delete button.
@@ -58,6 +100,17 @@ function deleteTodo(event) {
 
     let selectedTodo = event.target;
     let parentEL = selectedTodo.parentNode;
+
+    let deletedTaskValue = parentEL.querySelector('span').innerText;
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    const deletionIndex = tasks.indexOf(deletedTaskValue);
+    if (deletionIndex > -1) {
+        tasks.splice(deletionIndex, 1);
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    updateTotalCount(tasks.length);
+
     parentEL.remove();
 }
 
@@ -101,3 +154,15 @@ function notNullOrEmpty(inputStr) {
 
     return false;
 }
+
+/**
+ * Updates the task counter element based on the number of tasks for the user. 
+ * @param {number} total amount of tasks.
+ */
+function updateTotalCount(total) {
+
+    let totalCount = document.querySelector('.total-count');
+    totalCount.innerText = `Task Count: ${total}`;
+}
+
+fetchFromStorage();
