@@ -32,14 +32,14 @@
       <div class="todos-wrapper">
         <ul class="todos-list">
           <li class="list-item">
-            <input class="todo-item-checkbox" type="checkbox" />
+            <input class="todo-item-checkbox" type="checkbox" onclick="completeTodo(event)" />
             <span class="todo-item-title">Crushed this</span>
-            <button class="todo-item-delete">Delete</button>
+            <button class="todo-item-delete" onclick="deleteTodo(event)">Delete</button>
           </li>
           <li class="list-item">
-            <input class="todo-item-checkbox" type="checkbox" />
+            <input class="todo-item-checkbox" type="checkbox" onclick="completeTodo(event)" />
             <span class="todo-item-title">Also crushed this</span>
-            <button class="todo-item-delete">Delete</button>
+            <button class="todo-item-delete" onclick="deleteTodo(event)">Delete</button>
           </li>
         </ul>
       </div>

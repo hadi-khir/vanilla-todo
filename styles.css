@@ -67,6 +67,11 @@ ul {
   margin-top: 1em;
 }
 
+.list-item-completed {
+  text-decoration: line-through;
+  transform: scale(0.98); 
+}
+
 .todo-item-checkbox {
   width: 30px;
   height: 30px;
@@ -96,6 +101,7 @@ ul {
 .footer-bar-wrapper {
   display: flex;
   justify-content: space-between;
+  padding: 1em;
 }
 
 .filter-option-all,
