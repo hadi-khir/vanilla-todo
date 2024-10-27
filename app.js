@@ -1,3 +1,14 @@
+function getCurrentDate() {
+
+    let dateEl = document.querySelector('.current-date');
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    today = dd + '/' + mm + '/' + yyyy;
+    dateEl.appendChild(document.createTextNode(today))
+}
 
 /**
  * Fetches the users tasks from the browsers localstorage and updates the total count text.
@@ -166,3 +177,4 @@ function updateTotalCount(total) {
 }
 
 fetchFromStorage();
+getCurrentDate();
