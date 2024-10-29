@@ -59,7 +59,7 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 20em;
+  width: 50em;
   font-size: large;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
@@ -70,6 +70,10 @@ ul {
 .list-item-completed {
   text-decoration: line-through;
   transform: scale(0.98); 
+}
+
+.todo-item-title {
+  width: 30em;
 }
 
 .todo-item-checkbox {

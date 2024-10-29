@@ -35,13 +35,13 @@
       </div>
     </main>
     <footer>
+      <span class="total-count" aria-live="polite">Tasks Remaining: 0</span>
       <hr />
       <div class="footer-bar-wrapper">
         <div class="footer-bar-left-wrapper">
           <button class="filter-option-all" onclick="getAllTasks()">All</button>
           <button class="filter-option-active" onclick="getActiveTasks()">Active</button>
           <button class="filter-option-completed" onclick="getCompletedTasks()">Completed</button>
-          <span class="total-count" aria-live="polite">Tasks Remaining: 0</span>
         </div>
         <div class="footer-bar-right-wrapper">
           <button class="clear-btn" onclick="removeCompletedTasks()">Clear Completed</button>
@@ -49,5 +49,6 @@
       </div>
     </footer>
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   </body>
 </html>

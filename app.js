@@ -169,6 +169,13 @@ function completeTodo(event) {
                 return t.completed = true;
             }
         })
+
+        // Trigger confetti
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
     } else {
 
         todoItemText.classList.remove('list-item-completed');
