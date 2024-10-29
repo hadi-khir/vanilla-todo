@@ -185,6 +185,41 @@ function completeTodo(event) {
 }
 
 /**
+ * Remove tasks marked as completed from both the document and storage.
+ */
+function removeCompletedTasks() {
+
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    let completedtasks = tasks.filter(t => t.completed === true);
+    let uncompletedTasks = tasks.filter(t => t.completed === false);
+
+    // first we remove the completed tasks from the html. 
+    let parentListEl = document.querySelector('.todos-list');
+    let listItems = parentListEl.childNodes;
+
+    let deleted = [];
+    for (const item of listItems) {
+
+        if (item.nodeName === "LI") {
+
+            const spanEl = item.querySelector('span');
+            const toBeDeleted = completedtasks.findIndex(t => t.title === spanEl.innerText) > -1;
+            if (toBeDeleted) {
+                deleted.push(item);
+            }
+        }
+    }
+
+    for (const item of deleted) {
+
+        item.remove();
+    }
+
+    // update storage with only the uncompleted tasks
+    localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
+}
+
+/**
  * Checks if a given input is null or empty. 
  * 
  * @param {string} inputStr containing the user input for the ToDo item. 
