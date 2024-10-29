@@ -38,9 +38,9 @@
       <hr />
       <div class="footer-bar-wrapper">
         <div class="footer-bar-left-wrapper">
-          <button class="filter-option-all">All</button>
-          <button class="filter-option-active">Active</button>
-          <button class="filter-option-completed">Completed</button>
+          <button class="filter-option-all" onclick="getAllTasks()">All</button>
+          <button class="filter-option-active" onclick="getActiveTasks()">Active</button>
+          <button class="filter-option-completed" onclick="getCompletedTasks()">Completed</button>
           <span class="total-count" aria-live="polite">Tasks Remaining: 0</span>
         </div>
         <div class="footer-bar-right-wrapper">

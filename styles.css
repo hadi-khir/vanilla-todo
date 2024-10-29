@@ -84,9 +84,9 @@ ul {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
-  border: none;
-  color: white;
-  background: #e90a0a;
+  border: 1px solid #e90a0a;
+  color: #e90a0a;
+  background: white;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -96,6 +96,8 @@ ul {
 .todo-item-delete:active { 
   transform: scale(0.98); 
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+  color: white;
+  background: #e90a0a;
 } 
 
 .footer-bar-wrapper {
@@ -119,6 +121,19 @@ ul {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
+  border: 1px solid #945cbc;
+  color: #945cbc;
+  background: white;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: medium;
+}
+
+.filter-option-selected {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
   border: none;
   color: white;
   background: #945cbc;
@@ -134,6 +149,8 @@ ul {
 .clear-btn:active {
   transform: scale(0.98); 
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+  color: white;
+  background: #945cbc;
 }
 
 .footer-bar-left-wrapper,

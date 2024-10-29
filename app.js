@@ -190,13 +190,18 @@ function completeTodo(event) {
 function removeCompletedTasks() {
 
     let tasks = JSON.parse(localStorage.getItem('tasks'));
-    let completedtasks = tasks.filter(t => t.completed === true);
+    let completedTasks = tasks.filter(t => t.completed === true);
+
+    if (completedTasks.length < 1) {
+        return;
+    }
+
     let uncompletedTasks = tasks.filter(t => t.completed === false);
 
     // first we remove the completed tasks from the html. 
     let listItems = Array.from(document.querySelectorAll('.todos-list li'));
 
-    completedtasks.forEach(t => {
+    completedTasks.forEach(t => {
         const deletedEl = listItems.filter(l => l.querySelector('span').innerText === t.title)[0];
 
         if (deletedEl !== null) {
@@ -208,6 +213,72 @@ function removeCompletedTasks() {
 
     // update storage with only the uncompleted tasks
     localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
+}
+
+function getActiveTasks() {
+
+    // remove the selected filter style
+    removeSelectedFilterStyles();
+
+    // change the filter button css
+    let activeButton = document.querySelector('.filter-option-active');
+    activeButton.classList.add('filter-option-selected');
+
+    // get the list of tasks from storage
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    const activeTasks = tasks.filter(t => t.completed === false);
+
+    document.querySelector('.todos-list').replaceChildren();
+
+    activeTasks.forEach(t => createHtmlElementForTask(t));
+    updateTotalCount(activeTasks.length);
+}
+
+function getCompletedTasks() {
+
+    // remove the selected filter style
+    removeSelectedFilterStyles();
+
+    // change the filter button css
+    let completedButton = document.querySelector('.filter-option-completed');
+    completedButton.classList.add('filter-option-selected');
+
+    // get the list of tasks from storage
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    const completedTasks = tasks.filter(t => t.completed === true);
+
+    document.querySelector('.todos-list').replaceChildren();
+
+    completedTasks.forEach(t => createHtmlElementForTask(t));
+    updateTotalCount(completedTasks.length);
+}
+
+function getAllTasks() {
+
+    // remove the selected filter style
+    removeSelectedFilterStyles();
+
+    // change the filter button css
+    let allButton = document.querySelector('.filter-option-all');
+    allButton.classList.add('filter-option-selected');
+
+    // get the list of tasks from storage
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    document.querySelector('.todos-list').replaceChildren();
+
+    tasks.forEach(t => createHtmlElementForTask(t));
+    updateTotalCount(tasks.length);
+}
+
+function removeSelectedFilterStyles() {
+
+    let selectedFilter = document.querySelector('.filter-option-selected');
+    if (selectedFilter === null) {
+        return;
+    }
+
+    selectedFilter.classList.remove('filter-option-selected');
 }
 
 /**
@@ -238,3 +309,4 @@ function updateTotalCount(total) {
 
 fetchFromStorage();
 getCurrentDate();
+getAllTasks();
