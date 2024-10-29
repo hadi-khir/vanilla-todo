@@ -194,26 +194,17 @@ function removeCompletedTasks() {
     let uncompletedTasks = tasks.filter(t => t.completed === false);
 
     // first we remove the completed tasks from the html. 
-    let parentListEl = document.querySelector('.todos-list');
-    let listItems = parentListEl.childNodes;
+    let listItems = Array.from(document.querySelectorAll('.todos-list li'));
 
-    let deleted = [];
-    for (const item of listItems) {
+    completedtasks.forEach(t => {
+        const deletedEl = listItems.filter(l => l.querySelector('span').innerText === t.title)[0];
 
-        if (item.nodeName === "LI") {
-
-            const spanEl = item.querySelector('span');
-            const toBeDeleted = completedtasks.findIndex(t => t.title === spanEl.innerText) > -1;
-            if (toBeDeleted) {
-                deleted.push(item);
-            }
+        if (deletedEl !== null) {
+            deletedEl.remove();
+        } else {
+            console.warn('Unable to find deleted task')
         }
-    }
-
-    for (const item of deleted) {
-
-        item.remove();
-    }
+    })
 
     // update storage with only the uncompleted tasks
     localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
