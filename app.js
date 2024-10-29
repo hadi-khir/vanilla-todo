@@ -43,12 +43,20 @@ function createTodo() {
         return;
     }
 
-    addToStorage(newTodoInput);
+    let taskObj = {
+        title: newTodoInput,
+        completed: false
+    }
 
-    createHtmlElementForTask(newTodoInput);
+    addToStorage(taskObj);
+
+    createHtmlElementForTask(taskObj);
 }
 
 function createHtmlElementForTask(task) {
+
+    const title = task.title;
+    const completed = task.completed;
 
     // Create the delete button
     var deleteBtn = document.createElement('button');
@@ -58,13 +66,19 @@ function createHtmlElementForTask(task) {
 
     // Create the title
     var todoTitle = document.createElement('span');
-    todoTitle.appendChild(document.createTextNode(task));
+    todoTitle.appendChild(document.createTextNode(task.title));
+    if (completed) {
+        todoTitle.classList.add('list-item-completed');
+    }
     todoTitle.classList.add('todo-item-title');
 
     // Create the input checkbox
     var todoCheckBox = document.createElement('input');
     todoCheckBox.setAttribute('type', 'checkbox');
     todoCheckBox.setAttribute('onclick', 'completeTodo(event)');
+    if (completed) {
+        todoCheckBox.setAttribute('checked', true);
+    }
     todoCheckBox.classList.add('todo-item-checkbox');
 
     // Add the children to the list item
@@ -114,9 +128,11 @@ function deleteTodo(event) {
 
     let deletedTaskValue = parentEL.querySelector('span').innerText;
     let tasks = JSON.parse(localStorage.getItem('tasks'));
-    const deletionIndex = tasks.indexOf(deletedTaskValue);
+    const deletionIndex = tasks.findIndex(t => t.title === deletedTaskValue);
     if (deletionIndex > -1) {
         tasks.splice(deletionIndex, 1);
+    } else {
+        console.log('Unable to find deleted item')
     }
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -141,13 +157,31 @@ function completeTodo(event) {
     let parent = checkbox.parentNode;
     let todoItemText = parent.querySelector('span');
 
-    if (checkbox.checked === true) {
+    // get the tasks
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
 
+    if (checkbox.checked === true) {
         todoItemText.classList.add('list-item-completed');
+
+        // find the updated task item
+        tasks.map(t => {
+            if (t.title === todoItemText.innerText) {
+                return t.completed = true;
+            }
+        })
     } else {
 
         todoItemText.classList.remove('list-item-completed');
+
+        // find the updated task item
+        tasks.map(t => {
+            if (t.title === todoItemText.innerText) {
+                return t.completed = false;
+            }
+        })
     }
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 /**
