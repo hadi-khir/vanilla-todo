@@ -9,13 +9,14 @@
 }
 
 .todo-input {
-  width: 25em;
+  width: 80%;
   border: 1px solid #ccc;
   border-top: none;
   border-left: none;
   border-right: none;
   box-sizing: border-box;
   font-size: x-large;
+  margin-bottom: 2em;
 }
 
 .todo-input:focus {
@@ -46,7 +47,10 @@
 } 
 
 ul {
-  list-style-type: none;
+  list-style-type: inside;
+  margin-left: 0;
+  padding-left: 0;
+  width: 85%;
 }
 
 .todos-wrapper {
@@ -59,7 +63,7 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 50em;
+  width: 100%;
   font-size: large;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
@@ -73,7 +77,9 @@ ul {
 }
 
 .todo-item-title {
-  width: 30em;
+  width: 70%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .todo-item-checkbox {
@@ -132,6 +138,7 @@ ul {
   text-decoration: none;
   cursor: pointer;
   font-size: medium;
+  margin: 1px;
 }
 
 .filter-option-selected {

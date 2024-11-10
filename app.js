@@ -6,8 +6,8 @@ function getCurrentDate() {
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
-    today = dd + '/' + mm + '/' + yyyy;
-    dateEl.appendChild(document.createTextNode(today))
+    today = `${dd}/${mm}/${yyyy} - ${today.toLocaleTimeString()}`;
+    dateEl.textContent = today; // Updates the text instead of appending
 }
 
 /**
@@ -147,7 +147,6 @@ function deleteTodo(event) {
  * @returns false if the event is null, signaling an error. Nothing otherwise.
  */
 function completeTodo(event) {
-
     if (event === null || event === undefined) {
         alert('Something went wrong, could not process request.');
         return false;
@@ -158,17 +157,20 @@ function completeTodo(event) {
     let todoItemText = parent.querySelector('span');
 
     // get the tasks
-    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-    if (checkbox.checked === true) {
+    tasks = tasks.map(t => {
+        if (t.title === todoItemText.innerText) {
+            t.completed = checkbox.checked;
+        }
+        return t;
+    });
+
+    // Save updated tasks to storage
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    if (checkbox.checked) {
         todoItemText.classList.add('list-item-completed');
-
-        // find the updated task item
-        tasks.map(t => {
-            if (t.title === todoItemText.innerText) {
-                return t.completed = true;
-            }
-        })
 
         // Trigger confetti
         confetti({
@@ -177,19 +179,12 @@ function completeTodo(event) {
             origin: { y: 0.6 }
         });
     } else {
-
         todoItemText.classList.remove('list-item-completed');
-
-        // find the updated task item
-        tasks.map(t => {
-            if (t.title === todoItemText.innerText) {
-                return t.completed = false;
-            }
-        })
     }
 
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    updateTotalCount(tasks.length);
 }
+
 
 /**
  * Remove tasks marked as completed from both the document and storage.
@@ -315,5 +310,5 @@ function updateTotalCount(total) {
 }
 
 fetchFromStorage();
-getCurrentDate();
+window.setInterval(getCurrentDate, 1000);
 getAllTasks();
