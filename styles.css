@@ -36,9 +36,10 @@
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  font-size: x-large;
+  font-size: xx-large;
   background-size: 400% 400%;
   animation: ButtonBg 10s ease infinite;
+  width: 3em;
 }
 
 .input-btn:active { 
