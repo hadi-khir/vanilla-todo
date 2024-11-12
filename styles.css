@@ -2,6 +2,10 @@ body {
   background-color: #F2F3F4;
 }
 
+button span {
+  pointer-events: none;
+}
+
 .title-wrapper {
   text-align: center;
 }
