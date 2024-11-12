@@ -60,7 +60,9 @@ function createHtmlElementForTask(task) {
 
     // Create the delete button
     var deleteBtn = document.createElement('button');
-    deleteBtn.appendChild(document.createTextNode('Delete'));
+    let icon = document.createElement("i");
+    icon.classList.add('fa-regular', 'fa-trash-can');
+    deleteBtn.appendChild(icon);
     deleteBtn.classList.add('todo-item-delete');
     deleteBtn.setAttribute('onclick', 'deleteTodo(event)')
 
@@ -195,7 +197,7 @@ function removeCompletedTasks() {
     if (tasks === null) {
         return;
     }
-    
+
     let completedTasks = tasks.filter(t => t.completed === true);
 
     if (completedTasks.length < 1) {
