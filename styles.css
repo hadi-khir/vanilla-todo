@@ -91,7 +91,7 @@ ul {
   border: 2px solid #555;
 }
 
-.todo-item-delete {
+.todo-item-delete, .clear-btn {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
@@ -104,7 +104,7 @@ ul {
   font-size: medium;
 }
 
-.todo-item-delete:active { 
+.todo-item-delete:active, .clear-btn:active { 
   transform: scale(0.98); 
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
   color: white;
@@ -127,8 +127,7 @@ ul {
 
 .filter-option-all,
 .filter-option-active,
-.filter-option-completed,
-.clear-btn {
+.filter-option-completed {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
@@ -157,8 +156,7 @@ ul {
 
 .filter-option-all:active,
 .filter-option-active:active,
-.filter-option-completed:active,
-.clear-btn:active {
+.filter-option-completed:active {
   transform: scale(0.98); 
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
   color: white;
