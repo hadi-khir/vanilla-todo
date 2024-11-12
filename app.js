@@ -44,7 +44,7 @@ function createTodo() {
     }
 
     let taskObj = {
-        title: newTodoInput,
+        title: newTodoInput.trim(),
         completed: false
     }
 
@@ -192,6 +192,10 @@ function completeTodo(event) {
 function removeCompletedTasks() {
 
     let tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks === null) {
+        return;
+    }
+    
     let completedTasks = tasks.filter(t => t.completed === true);
 
     if (completedTasks.length < 1) {
@@ -228,6 +232,10 @@ function getActiveTasks() {
 
     // get the list of tasks from storage
     const tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks === null) {
+        return;
+    }
+
     const activeTasks = tasks.filter(t => t.completed === false);
 
     document.querySelector('.todos-list').replaceChildren();
@@ -247,6 +255,10 @@ function getCompletedTasks() {
 
     // get the list of tasks from storage
     const tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks === null) {
+        return;
+    }
+
     const completedTasks = tasks.filter(t => t.completed === true);
 
     document.querySelector('.todos-list').replaceChildren();
@@ -266,6 +278,10 @@ function getAllTasks() {
 
     // get the list of tasks from storage
     const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    if (tasks === null) {
+        return;
+    }
 
     document.querySelector('.todos-list').replaceChildren();
 

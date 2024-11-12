@@ -1,3 +1,7 @@
+body {
+  background-color: #F2F3F4;
+}
+
 .title-wrapper {
   text-align: center;
 }
@@ -17,6 +21,7 @@
   box-sizing: border-box;
   font-size: x-large;
   margin-bottom: 2em;
+  background-color: #F2F3F4;
 }
 
 .todo-input:focus {
@@ -31,7 +36,7 @@
   border: none;
   margin: 0;
   box-shadow: none;
-  color: white;
+  color: #F2F3F4;
   background: linear-gradient(to right, #ff6a00, #ee0979);
   text-align: center;
   text-decoration: none;
@@ -86,7 +91,7 @@ ul {
 .todo-item-checkbox {
   width: 30px;
   height: 30px;
-  background: white;
+  background-color: #F2F3F4;
   border-radius: 5px;
   border: 2px solid #555;
 }
@@ -97,7 +102,7 @@ ul {
   font-weight: 100;
   border: 1px solid #e90a0a;
   color: #e90a0a;
-  background: white;
+  background-color: #F2F3F4;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -107,7 +112,7 @@ ul {
 .todo-item-delete:active, .clear-btn:active { 
   transform: scale(0.98); 
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
-  color: white;
+  color: #F2F3F4;
   background: #e90a0a;
 } 
 
@@ -133,7 +138,7 @@ ul {
   font-weight: 100;
   border: 1px solid #945cbc;
   color: #945cbc;
-  background: white;
+  background-color: #F2F3F4;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -146,7 +151,7 @@ ul {
   letter-spacing: 2px;
   font-weight: 100;
   border: none;
-  color: white;
+  color: #F2F3F4;
   background: #945cbc;
   text-align: center;
   text-decoration: none;
@@ -159,7 +164,7 @@ ul {
 .filter-option-completed:active {
   transform: scale(0.98); 
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
-  color: white;
+  color: #F2F3F4;
   background: #945cbc;
 }
 

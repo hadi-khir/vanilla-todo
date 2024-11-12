@@ -1,55 +1,56 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta
-      charset="UTF-8"
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <title>Vanilla Todo</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header>
-      <div class="title-wrapper">
-        <h1 class="title">Let's get stuff done.</h1>
-        <h2 class="current-date"></h2>
+
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vanilla Todo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="VanillaTodo" />
+  <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body>
+  <header>
+    <div class="title-wrapper">
+      <h1 class="title">Let's get stuff done.</h1>
+      <h2 class="current-date"></h2>
+    </div>
+  </header>
+  <section>
+    <form onsubmit="return false;">
+      <div class="form-wrapper">
+        <input class="todo-input" type="text" placeholder="Add a task..." />
+        <br />
+        <button class="input-btn" onclick="createTodo()">+</button>
       </div>
-    </header>
-    <section>
-      <form onsubmit="return false;">
-        <div class="form-wrapper">
-          <input
-            class="todo-input"
-            type="text"
-            placeholder="Add a task..."
-          />
-          <br />
-          <button class="input-btn" onclick="createTodo()">+</button>
-        </div>
-      </form>
-    </section>
-    <main>
-      <div class="todos-wrapper">
-        <ul class="todos-list">
-        </ul>
+    </form>
+  </section>
+  <main>
+    <div class="todos-wrapper">
+      <ul class="todos-list">
+      </ul>
+    </div>
+  </main>
+  <footer>
+    <span class="total-count" aria-live="polite">Tasks Remaining: 0</span>
+    <hr />
+    <div class="footer-bar-wrapper">
+      <div class="footer-bar-left-wrapper">
+        <button class="filter-option-all" onclick="getAllTasks()">All</button>
+        <button class="filter-option-active" onclick="getActiveTasks()">Active</button>
+        <button class="filter-option-completed" onclick="getCompletedTasks()">Completed</button>
       </div>
-    </main>
-    <footer>
-      <span class="total-count" aria-live="polite">Tasks Remaining: 0</span>
-      <hr />
-      <div class="footer-bar-wrapper">
-        <div class="footer-bar-left-wrapper">
-          <button class="filter-option-all" onclick="getAllTasks()">All</button>
-          <button class="filter-option-active" onclick="getActiveTasks()">Active</button>
-          <button class="filter-option-completed" onclick="getCompletedTasks()">Completed</button>
-        </div>
-        <div class="footer-bar-right-wrapper">
-          <button class="clear-btn" onclick="removeCompletedTasks()">Clear Completed</button>
-        </div>
+      <div class="footer-bar-right-wrapper">
+        <button class="clear-btn" onclick="removeCompletedTasks()">Clear Completed</button>
       </div>
-    </footer>
-    <script src="app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  </body>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</body>
+
 </html>
