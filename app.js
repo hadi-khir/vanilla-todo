@@ -60,9 +60,8 @@ function createHtmlElementForTask(task) {
 
     // Create the delete button
     var deleteBtn = document.createElement('button');
-    let icon = document.createElement("i");
-    icon.classList.add('fa-regular', 'fa-trash-can');
-    deleteBtn.appendChild(icon);
+    let iconHtml = '<i class="fa-regular fa-trash-can"/>';
+    deleteBtn.innerHTML = iconHtml;
     deleteBtn.classList.add('todo-item-delete');
     deleteBtn.setAttribute('onclick', 'deleteTodo(event)')
 
