@@ -11,25 +11,6 @@ function getCurrentDate() {
 }
 
 /**
- * Fetches the users tasks from the browsers localstorage and updates the total count text.
- * 
- * @returns any tasks stored in the browsers localstorage under the key 'tasks'.
- */
-function fetchFromStorage() {
-
-    let tasks = JSON.parse(localStorage.getItem('tasks'));
-    if (tasks === null) {
-        return;
-    }
-
-    for (const task of tasks) {
-        createHtmlElementForTask(task);
-    }
-
-    updateTotalCount(tasks.length);
-}
-
-/**
  * Creates a new HTML todo item, include the li parent node, along with the input, span and button child elements.
  * Additionally stores the task details in the browsers localstorage.
  * @returns a new @code{'li'} item to be added to the task list. 
@@ -282,15 +263,17 @@ function getAllTasks() {
     allButton.classList.add('filter-option-selected');
 
     // get the list of tasks from storage
-    const tasks = JSON.parse(localStorage.getItem('tasks'));
-
-    if (tasks === null) {
-        return;
-    }
 
     document.querySelector('.todos-list').replaceChildren();
 
-    tasks.forEach(t => createHtmlElementForTask(t));
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    // Build uncompleted tasks first
+    tasks.filter(task => !task.completed).forEach(createHtmlElementForTask);
+
+    // Then build completed tasks
+    tasks.filter(task => task.completed).forEach(createHtmlElementForTask);
+
     updateTotalCount(tasks.length);
 }
 
@@ -330,6 +313,5 @@ function updateTotalCount(total) {
     totalCount.innerText = `Task Count: ${total}`;
 }
 
-fetchFromStorage();
-window.setInterval(getCurrentDate, 1000);
 getAllTasks();
+window.setInterval(getCurrentDate, 1000);
