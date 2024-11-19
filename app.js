@@ -60,14 +60,30 @@ function createHtmlElementForTask(task) {
 
     // Create the delete button
 
-    let icon = document.createElement("i");
-    icon.classList.add('fa-regular', 'fa-trash-can');
+    let deleteIcon = document.createElement("i");
+    deleteIcon.classList.add('fa-regular', 'fa-trash-can');
+
     let btnSpan = document.createElement("span");
-    btnSpan.appendChild(icon);
+    btnSpan.appendChild(deleteIcon);
+
     var deleteBtn = document.createElement('button');
     deleteBtn.appendChild(btnSpan);
     deleteBtn.classList.add('todo-item-delete');
     deleteBtn.setAttribute('onclick', 'deleteTodo(event)')
+
+
+    // create the edit button
+
+    let editIcon = document.createElement('i');
+    editIcon.classList.add('fa-regular', 'fa-pen-to-square');
+
+    let editBtnSpan = document.createElement('span');
+    editBtnSpan.appendChild(editIcon);
+
+    let editBtn = document.createElement('button');
+    editBtn.appendChild(editBtnSpan);
+    editBtn.classList.add('todo-item-edit');
+    editBtn.setAttribute('onClick', 'editTodo(event)');
 
     // Create the title
     var todoTitle = document.createElement('span');
@@ -91,6 +107,7 @@ function createHtmlElementForTask(task) {
     newTodoListItem.classList.add('list-item');
     newTodoListItem.appendChild(todoCheckBox);
     newTodoListItem.appendChild(todoTitle);
+    newTodoListItem.appendChild(editBtn);
     newTodoListItem.appendChild(deleteBtn);
 
     // Add the new list item to the task list
