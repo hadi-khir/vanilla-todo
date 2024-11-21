@@ -11,6 +11,32 @@ function getCurrentDate() {
 }
 
 /**
+ * Get the content of the todo input when a user change is detected. If the content is non null, then remove the disable 
+ * from the button. 
+ */
+function onTodoInputChange() {
+
+    // Grab the user input. 
+    const todoInput = document.querySelector('.todo-input');
+    if (notNullOrEmpty(todoInput.value)) {
+
+        let addTodoBtn = document.querySelector('.input-btn');
+        addTodoBtn.removeAttribute('disabled');
+    } else {
+
+        let addTodoBtn = document.querySelector('.input-btn');
+        addTodoBtn.setAttribute('disabled', true);
+    }
+}
+
+function disableAddTodoButton() {
+
+    return document.querySelector('.input-btn').setAttribute('disabled', true);
+}
+
+
+
+/**
  * Creates a new HTML todo item, include the li parent node, along with the input, span and button child elements.
  * Additionally stores the task details in the browsers localstorage.
  * @returns a new @code{'li'} item to be added to the task list. 
@@ -32,6 +58,8 @@ function createTodo() {
     addToStorage(taskObj);
 
     createHtmlElementForTask(taskObj);
+
+    disableAddTodoButton();
 }
 
 function createHtmlElementForTask(task) {

@@ -23,9 +23,9 @@
   <section>
     <form onsubmit="return false;">
       <div class="form-wrapper">
-        <input class="todo-input" type="text" placeholder="Add a task..." />
+        <input class="todo-input" type="text" placeholder="Add a task..." onkeyup="onTodoInputChange()" />
         <br />
-        <button class="input-btn" onclick="createTodo()">+</button>
+        <button disabled class="input-btn" onclick="createTodo()">+</button>
       </div>
     </form>
   </section>
