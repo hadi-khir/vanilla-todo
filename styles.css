@@ -51,10 +51,26 @@ button span {
   width: 3em;
 }
 
-.input-btn:active { 
-  transform: scale(0.98); 
-  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
-} 
+.input-btn:disabled {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
+  border: none;
+  margin: 0;
+  box-shadow: none;
+  color: #F2F3F4;
+  background: #555;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: xx-large;
+  width: 3em;
+}
+
+.input-btn:active {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
 
 ul {
   list-style-type: inside;
@@ -83,7 +99,7 @@ ul {
 
 .list-item-completed {
   text-decoration: line-through;
-  transform: scale(0.98); 
+  transform: scale(0.98);
 }
 
 .todo-item-title {
@@ -100,7 +116,8 @@ ul {
   border: 2px solid #555;
 }
 
-.todo-item-delete, .clear-btn {
+.todo-item-delete,
+.clear-btn {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
@@ -113,12 +130,15 @@ ul {
   font-size: medium;
 }
 
-.todo-item-delete:active, .clear-btn:active, .todo-item-delete:hover, .clear-btn:hover { 
-  transform: scale(0.98); 
-  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+.todo-item-delete:active,
+.clear-btn:active,
+.todo-item-delete:hover,
+.clear-btn:hover {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
   color: #F2F3F4;
   background: #e90a0a;
-} 
+}
 
 .footer-bar-wrapper {
   display: flex;
@@ -168,9 +188,9 @@ ul {
 .filter-option-completed:active,
 .filter-option-all:hover,
 .filter-option-active:hover,
-.filter-option-completed:hover  {
-  transform: scale(0.98); 
-  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+.filter-option-completed:hover {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
   color: #F2F3F4;
   background: #945cbc;
 }
