@@ -1,3 +1,6 @@
+/**
+ * Updates the current date and time in the designated element.
+ */
 function getCurrentDate() {
 
     let dateEl = document.querySelector('.current-date');
@@ -11,8 +14,7 @@ function getCurrentDate() {
 }
 
 /**
- * Get the content of the todo input when a user change is detected. If the content is non null, then remove the disable 
- * from the button. 
+ * Enables or disables the add button based on the validity of the user input.
  */
 function onTodoInputChange() {
 
@@ -29,6 +31,9 @@ function onTodoInputChange() {
     }
 }
 
+/**
+ * Disables the add todo button.
+ */
 function disableAddTodoButton() {
 
     return document.querySelector('.input-btn').setAttribute('disabled', true);
@@ -36,9 +41,7 @@ function disableAddTodoButton() {
 
 
 /**
- * Creates a new HTML todo item, include the li parent node, along with the input, span and button child elements.
- * Additionally stores the task details in the browsers localstorage.
- * @returns a new @code{'li'} item to be added to the task list. 
+ * Creates a new todo item, adds it to local storage, and displays it in the UI.
  */
 function createTodo() {
 
@@ -61,6 +64,10 @@ function createTodo() {
     disableAddTodoButton();
 }
 
+/**
+ * Creates an HTML element for a todo item and appends it to the list.
+ * @param {Object} task - The task object containing title and completion status.
+ */
 function createHtmlElementForTask(task) {
 
     const title = task.title;
@@ -109,6 +116,10 @@ function createHtmlElementForTask(task) {
     document.querySelector('.todo-input').value = '';
 }
 
+/**
+ * Adds a task to local storage and updates the task count.
+ * @param {Object} task - The task object to add.
+ */
 function addToStorage(task) {
 
     let tasks;
@@ -125,9 +136,9 @@ function addToStorage(task) {
 }
 
 /**
- * Removes an item from the todo list.
- * @param {HTMLEvent} event signaling the onclick function of the todo delete button.
- * @returns false if the event is null or undefined. Nothing otherwise.
+ * Deletes a todo item from local storage and the UI.
+ * @param {Event} event - The click event triggered by the delete button.
+ * @returns {boolean} False if the event is null or undefined.
  */
 function deleteTodo(event) {
 
@@ -155,9 +166,9 @@ function deleteTodo(event) {
 }
 
 /**
- * Completes a todo item by applying a CSS class to the span element. 
- * @param {HTMLEvent} event actioning the checkbox click of a todo item. 
- * @returns false if the event is null, signaling an error. Nothing otherwise.
+ * Marks a todo item as completed or uncompleted and updates local storage.
+ * @param {Event} event - The click event triggered by the checkbox.
+ * @returns {boolean} False if the event is null or undefined.
  */
 function completeTodo(event) {
     if (event === null || event === undefined) {
@@ -200,7 +211,7 @@ function completeTodo(event) {
 
 
 /**
- * Remove tasks marked as completed from both the document and storage.
+ * Removes all completed tasks from local storage and the UI.
  */
 function removeCompletedTasks() {
 
@@ -234,6 +245,10 @@ function removeCompletedTasks() {
     localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
 }
 
+/**
+ * Filters and displays tasks based on the provided condition.
+ * @param {Function} filterCondition - A function defining the filter criteria.
+ */
 function filterTasks(filterCondition) {
 
     removeSelectedFilterStyles();
@@ -246,6 +261,9 @@ function filterTasks(filterCondition) {
     updateTotalCount(filteredTasks.length);
 }
 
+/**
+ * Displays only active (uncompleted) tasks.
+ */
 function getActiveTasks() {
 
     // change the filter button css
@@ -254,6 +272,9 @@ function getActiveTasks() {
     filterTasks(t => t.completed != true);
 }
 
+/**
+ * Displays only completed tasks.
+ */
 function getCompletedTasks() {
 
     // change the filter button css
@@ -262,6 +283,9 @@ function getCompletedTasks() {
     filterTasks(t => t.completed === true);
 }
 
+/**
+ * Displays all tasks, both completed and uncompleted.
+ */
 function getAllTasks() {
 
     // remove the selected filter style
@@ -286,6 +310,9 @@ function getAllTasks() {
     updateTotalCount(tasks.length);
 }
 
+/**
+ * Removes the selected style from the currently active filter option.
+ */
 function removeSelectedFilterStyles() {
 
     let selectedFilter = document.querySelector('.filter-option-selected');
@@ -297,10 +324,9 @@ function removeSelectedFilterStyles() {
 }
 
 /**
- * Checks if a given input is null or empty. 
- * 
- * @param {string} inputStr containing the user input for the ToDo item. 
- * @returns {boolean} true if the trimmed input is null or empty, false otherwise. 
+ * Checks if a given string is not null or empty.
+ * @param {string} inputStr - The string to check.
+ * @returns {boolean} True if the string is not null or empty, false otherwise.
  */
 function notNullOrEmpty(inputStr) {
 
@@ -312,6 +338,11 @@ function notNullOrEmpty(inputStr) {
     return false;
 }
 
+/**
+ * Sanitizes a string to prevent XSS attacks.
+ * @param {string} string - The string to sanitize.
+ * @returns {string} The sanitized string.
+ */
 function sanitize(string) {
     const map = {
         '&': '&amp;',
@@ -326,8 +357,8 @@ function sanitize(string) {
 }
 
 /**
- * Updates the task counter element based on the number of tasks for the user. 
- * @param {number} total amount of tasks.
+ * Updates the task counter element with the current task count.
+ * @param {number} total - The total number of tasks.
  */
 function updateTotalCount(total) {
 
