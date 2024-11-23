@@ -50,7 +50,7 @@ function createTodo() {
     }
 
     let taskObj = {
-        title: newTodoInput.trim(),
+        title: sanitize(newTodoInput.trim()),
         completed: false
     }
 
@@ -310,6 +310,19 @@ function notNullOrEmpty(inputStr) {
     }
 
     return false;
+}
+
+function sanitize(string) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;',
+    };
+    const reg = /[&<>"'/]/ig;
+    return string.replace(reg, (match) => (map[match]));
 }
 
 /**
