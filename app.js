@@ -35,7 +35,6 @@ function disableAddTodoButton() {
 }
 
 
-
 /**
  * Creates a new HTML todo item, include the li parent node, along with the input, span and button child elements.
  * Additionally stores the task details in the browsers localstorage.
@@ -51,7 +50,7 @@ function createTodo() {
     }
 
     let taskObj = {
-        title: newTodoInput.trim(),
+        title: sanitize(newTodoInput.trim()),
         completed: false
     }
 
@@ -235,50 +234,32 @@ function removeCompletedTasks() {
     localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
 }
 
-function getActiveTasks() {
+function filterTasks(filterCondition) {
 
-    // remove the selected filter style
     removeSelectedFilterStyles();
 
-    // change the filter button css
-    let activeButton = document.querySelector('.filter-option-active');
-    activeButton.classList.add('filter-option-selected');
-
-    // get the list of tasks from storage
-    const tasks = JSON.parse(localStorage.getItem('tasks'));
-    if (tasks === null) {
-        return;
-    }
-
-    const activeTasks = tasks.filter(t => t.completed === false);
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
     document.querySelector('.todos-list').replaceChildren();
 
-    activeTasks.forEach(t => createHtmlElementForTask(t));
-    updateTotalCount(activeTasks.length);
+    const filteredTasks = tasks.filter(filterCondition).forEach(createHtmlElementForTask);
+    updateTotalCount(filteredTasks.length);
+}
+
+function getActiveTasks() {
+
+    // change the filter button css
+    let activeButton = document.querySelector('.filter-option-active').classList.add('filter-option-selected');
+
+    filterTasks(t => t.completed != true);
 }
 
 function getCompletedTasks() {
 
-    // remove the selected filter style
-    removeSelectedFilterStyles();
-
     // change the filter button css
-    let completedButton = document.querySelector('.filter-option-completed');
-    completedButton.classList.add('filter-option-selected');
+    let completedButton = document.querySelector('.filter-option-completed').classList.add('filter-option-selected');
 
-    // get the list of tasks from storage
-    const tasks = JSON.parse(localStorage.getItem('tasks'));
-    if (tasks === null) {
-        return;
-    }
-
-    const completedTasks = tasks.filter(t => t.completed === true);
-
-    document.querySelector('.todos-list').replaceChildren();
-
-    completedTasks.forEach(t => createHtmlElementForTask(t));
-    updateTotalCount(completedTasks.length);
+    filterTasks(t => t.completed === true);
 }
 
 function getAllTasks() {
@@ -329,6 +310,19 @@ function notNullOrEmpty(inputStr) {
     }
 
     return false;
+}
+
+function sanitize(string) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;',
+    };
+    const reg = /[&<>"'/]/ig;
+    return string.replace(reg, (match) => (map[match]));
 }
 
 /**
