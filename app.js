@@ -1,3 +1,93 @@
+function initialize() {
+
+
+    let groups = JSON.parse(localStorage.getItem('groups')) || [];
+
+    if (groups.length < 1) {
+        groups = [
+            {
+                id: 'reminders',
+                selected: true
+            }
+        ]
+        localStorage.setItem('groups', JSON.stringify(groups));
+    }
+
+    const selectedGroup = groups.filter(g => g.selected)[0];
+    groups.forEach(createHtmlElementForGroup);
+    fetchGroupItems(selectedGroup.id);
+
+    getCurrentDate();
+}
+
+function openGroupCreationModal() {
+
+    document.querySelector('.add-group-modal').style.display = 'block';
+}
+
+function closeGroupCreationModal() {
+
+    document.querySelector('.add-group-modal').style.display = 'none';
+}
+
+function addTodoGroup() {
+
+    let createGroupInput = document.querySelector('.add-group-modal-input');
+    const groupText = createGroupInput.value;
+    if (!notNullOrEmpty(groupText)) {
+        alert('Group input is invalid!');
+        return;
+    }
+
+    let group = {
+        id: titleToId(sanitize(groupText.trim())),
+        selected: false,
+    }
+
+    let groups;
+
+    if (JSON.parse(localStorage.getItem('groups')) === null) {
+        groups = [group];
+    } else {
+        groups = JSON.parse(localStorage.getItem('groups'));
+        groups.push(group);
+    }
+
+    localStorage.setItem('groups', JSON.stringify(groups));
+    createHtmlElementForGroup(group);
+
+    createGroupInput.value = '';
+
+    closeGroupCreationModal();
+
+    fetchGroupItems(group.id);
+}
+
+function fetchGroupItems(groupId) {
+
+    let prevSelected = document.querySelector('.todo-group-btn.selected');
+    if (prevSelected) {
+        prevSelected.classList.remove('selected');
+    }
+
+    document.getElementById(groupId).classList.add('selected');
+    getAllTasks(groupId);
+}
+
+function idToTitle(id) {
+
+    return id.split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+function titleToId(title) {
+
+    return title.split(' ')
+        .map(word => word.toLowerCase())
+        .join('-');
+}
+
 /**
  * Updates the current date and time in the designated element.
  */
@@ -31,6 +121,19 @@ function onTodoInputChange() {
     }
 }
 
+function onModalInputChange() {
+
+    const modalInput = document.querySelector('.add-group-modal-input');
+    if (notNullOrEmpty(modalInput.value)) {
+
+        let addGroupBtn = document.querySelector('.modal-group-btn');
+        addGroupBtn.removeAttribute('disabled');
+    } else {
+        let addGroupBtn = document.querySelector('.modal-group-btn');
+        addGroupBtn.setAttribute('disabled', true);
+    }
+}
+
 /**
  * Disables the add todo button.
  */
@@ -52,9 +155,13 @@ function createTodo() {
         return;
     }
 
+    // Grab the selected group
+    const selectedGroup = document.querySelector('.todo-group-btn.selected').id;
+
     let taskObj = {
         title: sanitize(newTodoInput.trim()),
-        completed: false
+        completed: false,
+        group: sanitize(selectedGroup)
     }
 
     addToStorage(taskObj);
@@ -114,6 +221,24 @@ function createHtmlElementForTask(task) {
 
     // Reset the input
     document.querySelector('.todo-input').value = '';
+}
+
+function createHtmlElementForGroup(group) {
+
+    let groupBtn = document.createElement('button');
+    groupBtn.classList.add('todo-group-btn');
+    if (group.selected) {
+        groupBtn.classList.add('selected');
+    }
+
+    groupBtn.id = group.id;
+    groupBtn.setAttribute('onclick', 'fetchGroupItems(this.id)');
+
+    groupBtn.innerText = idToTitle(group.id)
+
+    const childBtn = document.querySelector('.add-todo-group-btn');
+    const parent = childBtn.parentNode;
+    parent.insertBefore(groupBtn, childBtn);
 }
 
 /**
@@ -245,6 +370,22 @@ function removeCompletedTasks() {
     localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
 }
 
+function deleteGroup() {
+
+    let groups = JSON.parse(localStorage.getItem('groups'));
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    const selectedGroup = document.querySelector('.todo-group-btn.selected');
+    tasks = tasks.filter(task => task.group !== selectedGroup.id);
+    groups = groups.filter(group => group.id !== selectedGroup.id);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('groups', JSON.stringify(groups));
+
+    document.querySelectorAll('.todo-group-btn').forEach(g => g.remove());
+    initialize();
+}
+
 /**
  * Filters and displays tasks based on the provided condition.
  * @param {Function} filterCondition - A function defining the filter criteria.
@@ -253,12 +394,14 @@ function filterTasks(filterCondition) {
 
     removeSelectedFilterStyles();
 
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const selectedGroup = document.querySelector('.todo-group-btn.selected').id;
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')).filter(t => t.group === selectedGroup) || [];
 
     document.querySelector('.todos-list').replaceChildren();
 
     const filteredTasks = tasks.filter(filterCondition).forEach(createHtmlElementForTask);
-    updateTotalCount(filteredTasks.length);
+    updateTotalCount(filteredTasks ? filteredTasks.length : 0);
 }
 
 /**
@@ -267,7 +410,7 @@ function filterTasks(filterCondition) {
 function getActiveTasks() {
 
     // change the filter button css
-    let activeButton = document.querySelector('.filter-option-active').classList.add('filter-option-selected');
+    document.querySelector('.filter-option-active').classList.add('filter-option-selected');
 
     filterTasks(t => t.completed != true);
 }
@@ -278,7 +421,7 @@ function getActiveTasks() {
 function getCompletedTasks() {
 
     // change the filter button css
-    let completedButton = document.querySelector('.filter-option-completed').classList.add('filter-option-selected');
+    document.querySelector('.filter-option-completed').classList.add('filter-option-selected');
 
     filterTasks(t => t.completed === true);
 }
@@ -286,28 +429,27 @@ function getCompletedTasks() {
 /**
  * Displays all tasks, both completed and uncompleted.
  */
-function getAllTasks() {
+function getAllTasks(groupId) {
 
     // remove the selected filter style
     removeSelectedFilterStyles();
 
     // change the filter button css
-    let allButton = document.querySelector('.filter-option-all');
-    allButton.classList.add('filter-option-selected');
+    document.querySelector('.filter-option-all').classList.add('filter-option-selected');
 
     // get the list of tasks from storage
-
     document.querySelector('.todos-list').replaceChildren();
 
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const groupTasks = tasks.filter(t => t.group === groupId);
 
     // Build uncompleted tasks first
-    tasks.filter(task => !task.completed).forEach(createHtmlElementForTask);
+    groupTasks.filter(task => !task.completed).forEach(createHtmlElementForTask);
 
     // Then build completed tasks
-    tasks.filter(task => task.completed).forEach(createHtmlElementForTask);
+    groupTasks.filter(task => task.completed).forEach(createHtmlElementForTask);
 
-    updateTotalCount(tasks.length);
+    updateTotalCount(groupTasks.length);
 }
 
 /**
@@ -366,5 +508,12 @@ function updateTotalCount(total) {
     totalCount.innerText = `Task Count: ${total}`;
 }
 
-getAllTasks();
+initialize();
 window.setInterval(getCurrentDate, 1000);
+
+window.onclick = function (event) {
+    const modal = document.querySelector('.add-group-modal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
