@@ -1,24 +1,58 @@
 function initialize() {
 
-    const tempGroups = [
-        {
-            id: 'reminders',
-            selected: true
-        },
-        {
-            id: 'todo-list-app',
-            selected: false
-        }
-    ]
 
-    localStorage.setItem('groups', JSON.stringify(tempGroups));
+    let groups = JSON.parse(localStorage.getItem('groups')) || [];
 
+    if (groups.length < 1) {
+        groups = [
+            {
+                id: 'reminders',
+                selected: true
+            }
+        ]
+        localStorage.setItem('groups', JSON.stringify(groups));
+        buildGroupsFromStorage(groups);
+    } else {
+        const selectedGroup = groups.filter(g => g.selected)[0];
+        buildGroupsFromStorage(groups);
+        fetchGroupItems(selectedGroup.id);
+    }
+}
 
-    const groups = JSON.parse(localStorage.getItem('groups'));
-    buildGroupsFromStorage(groups);
+function openGroupCreationModal() {
 
-    const selectedGroup = groups.filter(g => g.selected)[0];
-    fetchGroupItems(selectedGroup.id);
+    document.querySelector('.add-group-modal').style.display = 'block';
+}
+
+function closeGroupCreationModal() {
+
+    document.querySelector('.add-group-modal').style.display = 'none';
+}
+
+function addTodoGroup() {
+
+    const createGroupInput = document.querySelector('.add-group-modal-input');
+    const groupText = createGroupInput.value;
+    if (!notNullOrEmpty(groupText)) {
+        alert('Group input is invalid!');
+        return;
+    }
+
+    let group = {
+        id: sanitize(groupText.trim()),
+        selected: false,
+    }
+
+    let groups;
+
+    if (JSON.parse(localStorage.getItem('groups')) === null) {
+        groups = [group];
+    } else {
+        groups = JSON.parse(localStorage.getItem('groups'));
+        groups.push(group);
+    }
+
+    localStorage.setItem('groups', JSON.stringify(groups));
 }
 
 function buildGroupsFromStorage(groups) {
@@ -44,7 +78,9 @@ function buildGroupsFromStorage(groups) {
 function fetchGroupItems(groupId) {
 
     let prevSelected = document.querySelector('.todo-group-btn.selected');
-    prevSelected.classList.remove('selected');
+    if (prevSelected) {
+        prevSelected.classList.remove('selected');
+    }
 
     document.getElementById(groupId).classList.add('selected');
     getAllTasks(groupId);
