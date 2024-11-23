@@ -1,3 +1,62 @@
+function initialize() {
+
+    const tempGroups = [
+        {
+            id: 'reminders',
+            selected: true
+        },
+        {
+            id: 'todo-list-app',
+            selected: false
+        }
+    ]
+
+    localStorage.setItem('groups', JSON.stringify(tempGroups));
+
+
+    const groups = JSON.parse(localStorage.getItem('groups'));
+    buildGroupsFromStorage(groups);
+
+    const selectedGroup = groups.filter(g => g.selected)[0];
+    fetchGroupItems(selectedGroup.id);
+}
+
+function buildGroupsFromStorage(groups) {
+
+    groups.forEach((group) => {
+        let groupBtn = document.createElement('button');
+        groupBtn.classList.add('todo-group-btn');
+        if (group.selected) {
+            groupBtn.classList.add('selected');
+        }
+
+        groupBtn.id = group.id;
+        groupBtn.setAttribute('onclick', 'fetchGroupItems(this.id)');
+
+        groupBtn.innerText = idToTitle(group.id)
+
+        const childBtn = document.querySelector('.add-todo-group-btn');
+        const parent = childBtn.parentNode;
+        parent.insertBefore(groupBtn, childBtn);
+    });
+}
+
+function fetchGroupItems(groupId) {
+
+    let prevSelected = document.querySelector('.todo-group-btn.selected');
+    prevSelected.classList.remove('selected');
+
+    document.getElementById(groupId).classList.add('selected');
+    getAllTasks(groupId);
+}
+
+function idToTitle(id) {
+
+    return id.split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join((' '));
+}
+
 /**
  * Updates the current date and time in the designated element.
  */
@@ -52,9 +111,13 @@ function createTodo() {
         return;
     }
 
+    // Grab the selected group
+    const selectedGroup = document.querySelector('.todo-group-btn.selected').id;
+
     let taskObj = {
         title: sanitize(newTodoInput.trim()),
-        completed: false
+        completed: false,
+        group: sanitize(selectedGroup)
     }
 
     addToStorage(taskObj);
@@ -253,12 +316,14 @@ function filterTasks(filterCondition) {
 
     removeSelectedFilterStyles();
 
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const selectedGroup = document.querySelector('.todo-group-btn.selected').id;
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')).filter(t => t.group === selectedGroup) || [];
 
     document.querySelector('.todos-list').replaceChildren();
 
     const filteredTasks = tasks.filter(filterCondition).forEach(createHtmlElementForTask);
-    updateTotalCount(filteredTasks.length);
+    updateTotalCount(filteredTasks ? filteredTasks.length : 0);
 }
 
 /**
@@ -267,7 +332,7 @@ function filterTasks(filterCondition) {
 function getActiveTasks() {
 
     // change the filter button css
-    let activeButton = document.querySelector('.filter-option-active').classList.add('filter-option-selected');
+    document.querySelector('.filter-option-active').classList.add('filter-option-selected');
 
     filterTasks(t => t.completed != true);
 }
@@ -278,7 +343,7 @@ function getActiveTasks() {
 function getCompletedTasks() {
 
     // change the filter button css
-    let completedButton = document.querySelector('.filter-option-completed').classList.add('filter-option-selected');
+    document.querySelector('.filter-option-completed').classList.add('filter-option-selected');
 
     filterTasks(t => t.completed === true);
 }
@@ -286,28 +351,27 @@ function getCompletedTasks() {
 /**
  * Displays all tasks, both completed and uncompleted.
  */
-function getAllTasks() {
+function getAllTasks(groupId) {
 
     // remove the selected filter style
     removeSelectedFilterStyles();
 
     // change the filter button css
-    let allButton = document.querySelector('.filter-option-all');
-    allButton.classList.add('filter-option-selected');
+    document.querySelector('.filter-option-all').classList.add('filter-option-selected');
 
     // get the list of tasks from storage
-
     document.querySelector('.todos-list').replaceChildren();
 
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const groupTasks = tasks.filter(t => t.group === groupId);
 
     // Build uncompleted tasks first
-    tasks.filter(task => !task.completed).forEach(createHtmlElementForTask);
+    groupTasks.filter(task => !task.completed).forEach(createHtmlElementForTask);
 
     // Then build completed tasks
-    tasks.filter(task => task.completed).forEach(createHtmlElementForTask);
+    groupTasks.filter(task => task.completed).forEach(createHtmlElementForTask);
 
-    updateTotalCount(tasks.length);
+    updateTotalCount(groupTasks.length);
 }
 
 /**
@@ -366,5 +430,5 @@ function updateTotalCount(total) {
     totalCount.innerText = `Task Count: ${total}`;
 }
 
-getAllTasks();
+initialize();
 window.setInterval(getCurrentDate, 1000);

@@ -72,6 +72,50 @@ button span {
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
+.list-group-wrapper {
+
+  display: flex;
+  justify-content: center;
+}
+
+.todo-group-btn {
+
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
+  border: 1px solid #945cbc;
+  border-bottom: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  color: #945cbc;
+  background-color: #F2F3F4;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: medium;
+  margin: 1px;
+}
+
+.todo-group-btn:active {
+  transform: scale(0.98);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+  color: #F2F3F4;
+  background: #945cbc;
+}
+
+.todo-group-btn.selected {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  font-weight: 100;
+  border: none;
+  color: #F2F3F4;
+  background: #945cbc;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: medium;
+}
+
 ul {
   list-style-type: inside;
   margin-left: 0;
