@@ -34,13 +34,15 @@
       <div class="add-group-modal-content">
         <button class="close-modal" onclick="closeGroupCreationModal()">&times;</button>
         <h2>Add a new group</h2>
-        <input class="add-group-modal-input" />
-        <button class='todo-group-btn' onclick="addTodoGroup()">Create Group</button>
+        <input class="add-group-modal-input" type="text" placeholder="Create a group..."
+          onkeyup="onModalInputChange()" />
+        <br />
+        <button disabled class='modal-group-btn' onclick="addTodoGroup()">Create Group</button>
       </div>
     </div>
     <div class="list-group-wrapper">
       <div class="list-group">
-        <button class="add-todo-group-btn todo-group-btn" onclick="openGroupCreationModal()">+</button>
+        <button class="add-todo-group-btn" onclick="openGroupCreationModal()">+</button>
       </div>
     </div>
     <div class="todos-wrapper">
@@ -58,6 +60,7 @@
       </div>
       <div class="footer-bar-right-wrapper">
         <button class="clear-btn" onclick="removeCompletedTasks()">Clear Completed</button>
+        <button class="delete-group" onclick="deleteGroup()">Delete Group</button>
       </div>
     </div>
   </footer>

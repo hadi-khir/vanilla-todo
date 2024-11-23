@@ -11,12 +11,13 @@ function initialize() {
             }
         ]
         localStorage.setItem('groups', JSON.stringify(groups));
-        buildGroupsFromStorage(groups);
-    } else {
-        const selectedGroup = groups.filter(g => g.selected)[0];
-        buildGroupsFromStorage(groups);
-        fetchGroupItems(selectedGroup.id);
     }
+
+    const selectedGroup = groups.filter(g => g.selected)[0];
+    groups.forEach(createHtmlElementForGroup);
+    fetchGroupItems(selectedGroup.id);
+
+    getCurrentDate();
 }
 
 function openGroupCreationModal() {
@@ -31,7 +32,7 @@ function closeGroupCreationModal() {
 
 function addTodoGroup() {
 
-    const createGroupInput = document.querySelector('.add-group-modal-input');
+    let createGroupInput = document.querySelector('.add-group-modal-input');
     const groupText = createGroupInput.value;
     if (!notNullOrEmpty(groupText)) {
         alert('Group input is invalid!');
@@ -39,7 +40,7 @@ function addTodoGroup() {
     }
 
     let group = {
-        id: sanitize(groupText.trim()),
+        id: titleToId(sanitize(groupText.trim())),
         selected: false,
     }
 
@@ -53,26 +54,13 @@ function addTodoGroup() {
     }
 
     localStorage.setItem('groups', JSON.stringify(groups));
-}
+    createHtmlElementForGroup(group);
 
-function buildGroupsFromStorage(groups) {
+    createGroupInput.value = '';
 
-    groups.forEach((group) => {
-        let groupBtn = document.createElement('button');
-        groupBtn.classList.add('todo-group-btn');
-        if (group.selected) {
-            groupBtn.classList.add('selected');
-        }
+    closeGroupCreationModal();
 
-        groupBtn.id = group.id;
-        groupBtn.setAttribute('onclick', 'fetchGroupItems(this.id)');
-
-        groupBtn.innerText = idToTitle(group.id)
-
-        const childBtn = document.querySelector('.add-todo-group-btn');
-        const parent = childBtn.parentNode;
-        parent.insertBefore(groupBtn, childBtn);
-    });
+    fetchGroupItems(group.id);
 }
 
 function fetchGroupItems(groupId) {
@@ -90,7 +78,14 @@ function idToTitle(id) {
 
     return id.split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join((' '));
+        .join(' ');
+}
+
+function titleToId(title) {
+
+    return title.split(' ')
+        .map(word => word.toLowerCase())
+        .join('-');
 }
 
 /**
@@ -123,6 +118,19 @@ function onTodoInputChange() {
 
         let addTodoBtn = document.querySelector('.input-btn');
         addTodoBtn.setAttribute('disabled', true);
+    }
+}
+
+function onModalInputChange() {
+
+    const modalInput = document.querySelector('.add-group-modal-input');
+    if (notNullOrEmpty(modalInput.value)) {
+
+        let addGroupBtn = document.querySelector('.modal-group-btn');
+        addGroupBtn.removeAttribute('disabled');
+    } else {
+        let addGroupBtn = document.querySelector('.modal-group-btn');
+        addGroupBtn.setAttribute('disabled', true);
     }
 }
 
@@ -213,6 +221,24 @@ function createHtmlElementForTask(task) {
 
     // Reset the input
     document.querySelector('.todo-input').value = '';
+}
+
+function createHtmlElementForGroup(group) {
+
+    let groupBtn = document.createElement('button');
+    groupBtn.classList.add('todo-group-btn');
+    if (group.selected) {
+        groupBtn.classList.add('selected');
+    }
+
+    groupBtn.id = group.id;
+    groupBtn.setAttribute('onclick', 'fetchGroupItems(this.id)');
+
+    groupBtn.innerText = idToTitle(group.id)
+
+    const childBtn = document.querySelector('.add-todo-group-btn');
+    const parent = childBtn.parentNode;
+    parent.insertBefore(groupBtn, childBtn);
 }
 
 /**
@@ -344,6 +370,22 @@ function removeCompletedTasks() {
     localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
 }
 
+function deleteGroup() {
+
+    let groups = JSON.parse(localStorage.getItem('groups'));
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    const selectedGroup = document.querySelector('.todo-group-btn.selected');
+    tasks = tasks.filter(task => task.group !== selectedGroup.id);
+    groups = groups.filter(group => group.id !== selectedGroup.id);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('groups', JSON.stringify(groups));
+
+    document.querySelectorAll('.todo-group-btn').forEach(g => g.remove());
+    initialize();
+}
+
 /**
  * Filters and displays tasks based on the provided condition.
  * @param {Function} filterCondition - A function defining the filter criteria.
@@ -468,3 +510,10 @@ function updateTotalCount(total) {
 
 initialize();
 window.setInterval(getCurrentDate, 1000);
+
+window.onclick = function (event) {
+    const modal = document.querySelector('.add-group-modal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
