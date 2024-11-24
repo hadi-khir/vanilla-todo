@@ -85,9 +85,15 @@ button span {
 }
 
 .list-group-wrapper {
-
   display: flex;
   justify-content: center;
+}
+
+.list-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 80%
 }
 
 .todo-group-btn,
