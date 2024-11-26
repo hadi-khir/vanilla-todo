@@ -1,3 +1,6 @@
+/**
+ * Initializes the application by setting up groups, fetching tasks, and displaying the current date.
+ */
 function initialize() {
 
 
@@ -20,16 +23,25 @@ function initialize() {
     getCurrentDate();
 }
 
+/**
+ * Displays the modal for creating a new group.
+ */
 function openGroupCreationModal() {
 
     document.querySelector('.add-group-modal').style.display = 'block';
 }
 
+/**
+ * Hides the modal for creating a new group.
+ */
 function closeGroupCreationModal() {
 
     document.querySelector('.add-group-modal').style.display = 'none';
 }
 
+/**
+ * Adds a new todo group, updates local storage, and refreshes the UI.
+ */
 function addTodoGroup() {
 
     let createGroupInput = document.querySelector('.add-group-modal-input');
@@ -63,6 +75,10 @@ function addTodoGroup() {
     fetchGroupItems(group.id);
 }
 
+/**
+ * Fetches and displays the items for a specific group.
+ * @param {string} groupId - The ID of the group to fetch items for.
+ */
 function fetchGroupItems(groupId) {
 
     let prevSelected = document.querySelector('.todo-group-btn.selected');
@@ -72,8 +88,45 @@ function fetchGroupItems(groupId) {
 
     document.getElementById(groupId).classList.add('selected');
     getAllTasks(groupId);
+    saveSelectedGroup(groupId);
 }
 
+/**
+ * Saves the selected group in local storage and updates its state.
+ * @param {string} groupId - The ID of the group to set as selected.
+ */
+function saveSelectedGroup(currentGroup) {
+    // Retrieve the groups from localStorage
+    let groups = JSON.parse(localStorage.getItem('groups')) || []; // Default to empty array if null
+    console.log('Initial groups:', groups);
+
+    // Update the selected state
+    groups = groups.map(group => {
+        console.log('Processing group:', group);
+
+        // Ensure the group is valid and has an id
+        if (!group || typeof group.id === 'undefined') {
+            console.error('Invalid group:', group);
+            return group; // Skip processing invalid group
+        }
+
+        // Create a new object with updated selected state
+        return {
+            ...group, // Keep existing properties
+            selected: group.id === currentGroup, // Update selected state
+        };
+    });
+
+    // Save the updated groups back to localStorage
+    localStorage.setItem('groups', JSON.stringify(groups));
+    console.log('Updated groups:', groups);
+}
+
+/**
+ * Converts an ID to a title by capitalizing words and replacing hyphens with spaces.
+ * @param {string} id - The ID to convert.
+ * @returns {string} The converted title.
+ */
 function idToTitle(id) {
 
     return id.split('-')
@@ -81,6 +134,11 @@ function idToTitle(id) {
         .join(' ');
 }
 
+/**
+ * Converts a title to an ID by lowercasing words and replacing spaces with hyphens.
+ * @param {string} title - The title to convert.
+ * @returns {string} The converted ID.
+ */
 function titleToId(title) {
 
     return title.split(' ')
@@ -121,6 +179,9 @@ function onTodoInputChange() {
     }
 }
 
+/**
+ * Handles input changes in the modal and enables/disables the add group button.
+ */
 function onModalInputChange() {
 
     const modalInput = document.querySelector('.add-group-modal-input');
@@ -223,6 +284,10 @@ function createHtmlElementForTask(task) {
     document.querySelector('.todo-input').value = '';
 }
 
+/**
+ * Creates an HTML element for a group button and appends it to the group list.
+ * @param {Object} group - The group object containing ID and selection status.
+ */
 function createHtmlElementForGroup(group) {
 
     let groupBtn = document.createElement('button');
@@ -400,7 +465,7 @@ function filterTasks(filterCondition) {
 
     document.querySelector('.todos-list').replaceChildren();
 
-    const filteredTasks = tasks.filter(filterCondition).forEach(createHtmlElementForTask);
+    const filteredTasks = tasks.filter(filterCondition).map(createHtmlElementForTask);
     updateTotalCount(filteredTasks ? filteredTasks.length : 0);
 }
 
@@ -409,10 +474,10 @@ function filterTasks(filterCondition) {
  */
 function getActiveTasks() {
 
+    filterTasks(t => t.completed != true);
+
     // change the filter button css
     document.querySelector('.filter-option-active').classList.add('filter-option-selected');
-
-    filterTasks(t => t.completed != true);
 }
 
 /**
@@ -420,16 +485,21 @@ function getActiveTasks() {
  */
 function getCompletedTasks() {
 
+    filterTasks(t => t.completed === true);
+
     // change the filter button css
     document.querySelector('.filter-option-completed').classList.add('filter-option-selected');
-
-    filterTasks(t => t.completed === true);
 }
 
 /**
  * Displays all tasks, both completed and uncompleted.
  */
 function getAllTasks(groupId) {
+
+
+    if (!groupId) {
+        groupId = document.querySelector('.todo-group-btn.selected').id;
+    }
 
     // remove the selected filter style
     removeSelectedFilterStyles();
@@ -487,12 +557,10 @@ function notNullOrEmpty(inputStr) {
  */
 function sanitize(string) {
     const map = {
-        '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
         "'": '&#x27;',
-        "/": '&#x2F;',
     };
     const reg = /[&<>"'/]/ig;
     return string.replace(reg, (match) => (map[match]));
