@@ -16,7 +16,7 @@ function initialize() {
         localStorage.setItem('groups', JSON.stringify(groups));
     }
 
-    const selectedGroup = groups.filter(g => g.selected)[0];
+    let selectedGroup = groups.filter(g => g.selected)[0] || groups[0];
     groups.forEach(createHtmlElementForGroup);
     fetchGroupItems(selectedGroup.id);
 
@@ -157,8 +157,11 @@ function getCurrentDate() {
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
-    today = `${dd}/${mm}/${yyyy} - ${today.toLocaleTimeString()}`;
+    const time = today.toLocaleTimeString();
+    today = `${dd}/${mm}/${yyyy} - ${time}`;
     dateEl.textContent = today; // Updates the text instead of appending
+
+    document.title = time;
 }
 
 /**
@@ -322,7 +325,10 @@ function addToStorage(task) {
     }
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    updateTotalCount(tasks.length);
+
+    const selectedGroup = getSelectedGroup();
+
+    updateTotalCount(tasks.filter(task => task.group === selectedGroup).length);
 }
 
 /**
@@ -396,7 +402,7 @@ function completeTodo(event) {
         todoItemText.classList.remove('list-item-completed');
     }
 
-    updateTotalCount(tasks.length);
+    updateTotalCount(tasks.filter(t => t.group === getSelectedGroup()).length);
 }
 
 
@@ -404,36 +410,43 @@ function completeTodo(event) {
  * Removes all completed tasks from local storage and the UI.
  */
 function removeCompletedTasks() {
-
-    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
     if (tasks === null) {
         return;
     }
 
-    let completedTasks = tasks.filter(t => t.completed === true);
+    // Use filter instead of map to exclude completed tasks in the selected group
+    const updatedTasks = tasks.filter(task => {
+        return !(task.completed === true && task.group === getSelectedGroup());
+    });
+
+    const groupTasks = tasks.filter(task => task.group === getSelectedGroup());
+    const completedTasks = groupTasks.filter(t => t.completed === true);
 
     if (completedTasks.length < 1) {
         return;
     }
 
-    let uncompletedTasks = tasks.filter(t => t.completed === false);
-
-    // first we remove the completed tasks from the html. 
+    // Remove the completed tasks from the HTML
     let listItems = Array.from(document.querySelectorAll('.todos-list li'));
 
     completedTasks.forEach(t => {
-        const deletedEl = listItems.filter(l => l.querySelector('span').innerText === t.title)[0];
+        const deletedEl = listItems.find(l => {
+            const span = l.querySelector('span');
+            return span && span.innerText === t.title;
+        });
 
-        if (deletedEl !== null) {
+        if (deletedEl) {
             deletedEl.remove();
         } else {
-            console.warn('Unable to find deleted task')
+            console.warn('Unable to find deleted task:', t.title);
         }
-    })
+    });
 
-    // update storage with only the uncompleted tasks
-    localStorage.setItem('tasks', JSON.stringify(uncompletedTasks));
+    // Update storage with only the uncompleted tasks
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
 }
+
 
 function deleteGroup() {
 
@@ -448,7 +461,13 @@ function deleteGroup() {
     localStorage.setItem('groups', JSON.stringify(groups));
 
     document.querySelectorAll('.todo-group-btn').forEach(g => g.remove());
+
     initialize();
+}
+
+function getSelectedGroup() {
+
+    return document.querySelector('.todo-group-btn.selected').id;
 }
 
 /**

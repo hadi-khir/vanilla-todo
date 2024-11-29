@@ -47,10 +47,11 @@ button span {
 
 .input-btn {
   font-family: "Open Sans", sans-serif;
-  letter-spacing: 2px;
   font-weight: 100;
   border: none;
-  margin: 0;
+  border-radius: 50%;
+  padding: 20px;
+  margin: 4px 2px;
   box-shadow: none;
   color: #F2F3F4;
   background: linear-gradient(to right, #ff6a00, #ee0979);
@@ -60,23 +61,12 @@ button span {
   font-size: xx-large;
   background-size: 400% 400%;
   animation: ButtonBg 10s ease infinite;
-  width: 3em;
+  width: 2.5em;
 }
 
 .input-btn:disabled {
-  font-family: "Open Sans", sans-serif;
-  letter-spacing: 2px;
-  font-weight: 100;
-  border: none;
-  margin: 0;
-  box-shadow: none;
   color: #F2F3F4;
   background: #555;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: xx-large;
-  width: 3em;
 }
 
 .input-btn:active {
@@ -214,7 +204,7 @@ ul {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
-  border: 1px solid #e90a0a;
+  border: none;
   color: #e90a0a;
   background-color: #F2F3F4;
   text-align: center;
@@ -233,7 +223,7 @@ ul {
   transform: scale(0.98);
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
   color: #F2F3F4;
-  background: #e90a0a;
+  background-color: #e90a0a;
 }
 
 .footer-bar-wrapper {
@@ -256,7 +246,7 @@ ul {
   font-family: "Open Sans", sans-serif;
   letter-spacing: 2px;
   font-weight: 100;
-  border: 1px solid #945cbc;
+  border: none;
   color: #945cbc;
   background-color: #F2F3F4;
   text-align: center;
